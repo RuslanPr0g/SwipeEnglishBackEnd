@@ -1,6 +1,5 @@
 const express = require('express');
 const users = express.Router();
-const bcrypt2 = require('mongoose-bcrypt');
 const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
