@@ -1,6 +1,7 @@
 const express = require('express');
 const users = express.Router();
-const bcrypt = require('mongoose-bcrypt');
+const bcrypt2 = require('mongoose-bcrypt');
+const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 
@@ -24,22 +25,22 @@ users.post('/register', (req, res) => {
   })
     .then(user => {
       if (!user) {
-        bcrypt.hash(req.body.password, (err, hash) => {
+        bcrypt.hash(req.body.password, 10, (err, hash) => {
           userData.password = hash;
           User.create(userData)
             .then(user => {
-              res.json({ status: user.email + 'Registered!' })
+              res.json({ error: 'Registered!' })
             })
             .catch(err => {
-              res.send('error: ' + err)
+              res.json({ error: 'error'})
             })
         })
       } else {
-        res.json({ error: 'User already exists ' + user.email })
+        res.json({ error: 'error'})
       }
     })
     .catch(err => {
-      res.send('ERROR: ' + err)
+      res.json({ error: 'error'})
     })
 })
 
@@ -62,7 +63,7 @@ users.post('/login', (req, res) => {
           res.send(token)
         } else {
           // Passwords don't match
-          res.json({ error: 'User does not exist' })
+          res.json({ error: 'Wrong Password' })
         }
       } else {
         res.json({ error: 'User does not exist' })
@@ -91,20 +92,10 @@ users.get('/profile', (req, res) => {
     })
 })
 
+users.route('/').get((req, res) => {
+    User.find()
+        .then(users => res.json(users))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
 module.exports = users;
-
-// users.route('/').get((req, res) => {
-//     User.find()
-//         .then(users => res.json(users))
-//         .catch(err => res.status(400).json('Error: ' + err));
-// });
-
-// users.route('/add').post((req, res) => {
-//     const username = req.body.username;
-
-//     const newUser = new User({username});
-
-//     newUser.save()
-//         .then(() => res.json('User added!'))
-//         .catch(err => res.status(400).json('Error: ' + err));
-// });

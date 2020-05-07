@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const bcrypt = require('mongoose-bcrypt');
 
 const userSchema = new Schema({
     username:
@@ -7,7 +8,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
         trim: true, // remove white-spaces at the end
-        minlength: 5
+        min: 5
     },
     email: 
     {
@@ -19,7 +20,7 @@ const userSchema = new Schema({
     {
         type: String,
         required: true,
-        minlength: 6
+        min: 5
     },
     date: 
     {
