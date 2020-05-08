@@ -29,8 +29,12 @@ const userSchema = new Schema({
     {
         type: Date,
         default: Date.now
+    },
+    kwords:
+    {
+        type: Array
     }
-}, { timestamps: true }); 
+}, { timestamps: true, versionKey: false }); 
 
 const User = mongoose.model('User', userSchema);
 

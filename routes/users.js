@@ -10,6 +10,12 @@ users.use(cors())
 
 process.env.SECRET_KEY = 'secret';
 
+users.route('/').get((req, res) => {
+  User.find()
+      .then(users => res.json(users))
+      .catch(err => res.status(400).json('Error: ' + err));
+});
+
 users.post('/register', (req, res) => {
   const today = new Date()
   const userData = {
@@ -91,10 +97,54 @@ users.get('/profile', (req, res) => {
     })
 })
 
-users.route('/').get((req, res) => {
-    User.find()
-        .then(users => res.json(users))
-        .catch(err => res.status(400).json('Error: ' + err));
-});
+users.route('/add-word/:id').post((req, res) => {
+    User.findById(req.params.id)
+        .then(user => {
+          if(user['kwords'].indexOf(req.body.word) === -1)
+          {
+          user['kwords'].push(req.body.word)
+
+          user.save()
+            .then(() => res.json('Word Memorized!'))
+            .catch(err => res.status(400).json('Error1: ' + err));
+          }
+          else
+          {
+            user.save()
+            .then(() => res.json('Word Exists! (but document saved)'))
+            .catch(err => res.status(400).json('Error1: ' + err));
+          }
+        })
+        .catch(err => res.status(400).json('Error2: ' + err));
+})
+
+users.route('/delete-word/:id').delete((req, res) => {
+  User.findById(req.params.id)
+      .then(user => {
+        const needed_word = user['kwords'].indexOf(req.body.word);
+        if(needed_word !== -1)
+        {
+          user['kwords'].splice(needed_word, 1)
+
+          user.save()
+            .then(() => res.json('Word Forgotten!'))
+            .catch(err => res.status(400).json('Error1: ' + err));
+        }
+        else
+        {
+          user.save()
+          .then(() => res.json('Word Not Found! (but document saved)'))
+          .catch(err => res.status(400).json('Error1: ' + err));
+        }
+      })
+      .catch(err => res.status(400).json('rrror: ' + err))
+})
+
+
+users.get('/get-words/:id', (req, res) => {
+  User.findById(req.params.id)
+    .then(_words => res.json(_words.kwords))
+    .catch(err => res.status(400).json('Error: ' + err))
+})
 
 module.exports = users;
