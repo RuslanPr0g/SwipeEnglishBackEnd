@@ -6,13 +6,17 @@ const userSchema = new Schema({
     {
         type: String,
         required: true,
-        trim: true, // remove white-spaces at the end
-        min: 5
+        trim: true, // remove white-spaces
+        min: 5,
+        max: 20,
+        unique: true
     },
     email: 
     {
         type: String,
+        trim: true,
         required: true,
+        max: 30,
         unique: true
     },
     password: 
