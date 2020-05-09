@@ -102,7 +102,7 @@ users.route('/add-word/:id').post((req, res) => {
         .then(user => {
           if(user['kwords'].indexOf(req.body.word) === -1)
           {
-          user['kwords'].push(req.body.word)
+          user['kwords'].push(req.body.data.word)
 
           user.save()
             .then(() => res.json('Word Memorized!'))
@@ -125,7 +125,7 @@ users.route('/delete-word/:id').delete((req, res) => {
         if(needed_word !== -1)
         {
           user['kwords'].splice(needed_word, 1)
-
+          // props.words.filter(el => el !== this.word) // another variant
           user.save()
             .then(() => res.json('Word Forgotten!'))
             .catch(err => res.status(400).json('Error1: ' + err));
