@@ -15,7 +15,8 @@ words.get('/', (req, res) => {
 words.post('/addWord', (req, res) => {
     const wordData = {
         name: req.body.name,
-        difficulty: req.body.difficulty
+        difficulty: req.body.difficulty,
+        speech: req.body.speech
       }
 
     Word.create(wordData)

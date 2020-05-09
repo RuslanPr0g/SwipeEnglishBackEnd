@@ -14,6 +14,11 @@ const wordSchema = new Schema({
         type: String,
         required: true,
         trim: true
+    },
+    speech: 
+    {
+        type: String,
+        trim: true
     }
 }, { timestamps: true }); 
 
