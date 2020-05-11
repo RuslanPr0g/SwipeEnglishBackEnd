@@ -100,7 +100,7 @@ users.get('/profile', (req, res) => {
 users.route('/add-word/:id').post((req, res) => {
     User.findById(req.params.id)
         .then(user => {
-          if(user['kwords'].indexOf(req.body.word) === -1)
+          if(user['kwords'].indexOf(req.body.data.word) === -1)
           {
           user['kwords'].push(req.body.data.word)
 

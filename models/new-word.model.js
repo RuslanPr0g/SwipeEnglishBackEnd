@@ -27,4 +27,4 @@ const wordSchema = new Schema({
     }
 }, { timestamps: true, versionKey: false }); 
 
-module.exports = Word = mongoose.model('new_word', wordSchema);
+module.exports = New_Word = mongoose.model('new_word', wordSchema);
