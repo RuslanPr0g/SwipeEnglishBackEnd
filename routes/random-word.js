@@ -9,7 +9,7 @@ words.use(cors());
 words.get('/', (req, res) => {
         Word.aggregate(
             [ { $sample: { size: 1 } } ]
-         ).then(words => res.json(words))
+         ).then(word => res.json(word))
          .catch(err => res.status(400).json('Error: ' + err));
 });
 

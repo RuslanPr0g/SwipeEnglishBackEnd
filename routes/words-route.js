@@ -28,4 +28,17 @@ words.post('/addWord', (req, res) => {
         })
 });
 
+words.get('/paginate', (req, res) => {
+    const pageData = {
+        pageNumber: req.body.pageNumber,
+        nPerPage: 10
+      }
+
+    Word.find()
+        .skip( pageData.pageNumber > 0 ? ( ( pageData.pageNumber - 1 ) * pageData.nPerPage ) : 0 )
+        .limit( pageData.nPerPage )
+        .then(words => res.json(words))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
 module.exports = words;
